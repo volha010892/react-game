@@ -14,19 +14,22 @@ import {
 export default function Game() {
   const [cardType, setCardType] = useState(cardsCat);
   const [restart, setRestart] = useState(false);
+  const [bigSize, setBigSize] = useState(false);
   const [cardsArray, setCardsArray] = useState(cardType);
   useEffect(() => {
     setRestart(false);
     let secondImagesArray = cardType.slice(0, cardType.length);
     setCardsArray(cardType.concat(secondImagesArray));
-  }, [cardType]);
+  }, [cardType, restart]);
   const changeCardType = (e) => {
     if (e.target.id == 1) setCardType(cardsDog);
     if (e.target.id == 2) setCardType(cardsCat);
     setRestart(true);
+    setBigSize(false);
   };
   const changeSize = () => {
     setCardType(catDog);
+    setBigSize(true);
     setRestart(true);
   };
 
@@ -43,7 +46,7 @@ export default function Game() {
       </ButtonContainerStyle>
       {!restart && (
         <GameContainerStyle>
-          <ImagesContainerStyle>
+          <ImagesContainerStyle className={bigSize?'big':'normal'}>
             {cardsArray
               .sort(() => Math.random() - 0.5)
               .map((card, i) => (
