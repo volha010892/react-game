@@ -1,27 +1,43 @@
 import styled from 'styled-components';
-import bg from '../../../assets/img/bg.png';
+let vh = window.innerHeight;
+let vw = window.innerWidth;
+export const Flipper = styled.div`
+  height: 100%;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  &.click {
+    transform: rotateY(180deg);
+  }
+`;
 export const ItemContainerStyle = styled.div`
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 120px;
-  width: 120px;
   border-radius: 5px;
   box-shadow: 2px 2px 3px black;
   margin: 10px;
-  object-fit: cover;
-  &.front,
-  &.back {
-    background-size: cover;
+  perspective: 1000;
+  &.big {
+    width: ${vw / 5 - 50}px;
+    height: ${0.18 * vh}px;
   }
-
-  &.back {
-    opacity: opacity.interpolate(1 => o - 1);
-    background-image: url(${bg});
- 
+  &.normal {
+    width: ${vw /4 - 50}px;
+    height: ${0.25 * vh}px;
   }
-
-  &.front {
-    background-image: url(https://images.unsplash.com/photo-1540206395-68808572332f?ixlib=rb-1.2.1&w=1181&q=80&auto=format&fit=crop);
+  &.click {
+    transform: rotateY(180deg);
   }
+`;
+export const ImageFront = styled.div`
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  z-index: 2;
+  position: absolute;
+`;
+export const ImageBack = styled.div`
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  position: absolute;
 `;

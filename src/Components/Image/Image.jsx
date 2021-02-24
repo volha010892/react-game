@@ -1,9 +1,9 @@
 import React from 'react';
-
-export default function Image({ src, alt = '', style = {}, id, className = '', ...props }) {
+import {ImageContainer} from './Style/Image';
+export default function Image({ src, alt = ''}) {
   return (
-    <div style={{objectFit:'contain'}}>
-      <img src={src} alt={alt} style={style} className={className} {...props} />
-    </div>
+    <ImageContainer>
+      <img src={src} alt={alt} />
+    </ImageContainer>
   );
 }
