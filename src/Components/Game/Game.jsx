@@ -112,10 +112,9 @@ export default function Game() {
   };
   useEffect(() => {}, [autoplay]);
   const autoPlay = (e) => {
+    resetGame();
     setAutoPlay(true);
-    let arrayID = cardsArray.filter((card, i) =>{
-       if(!card.check) return card}).map((card, i)=>card.index);
-       console.log(arrayID)
+    let arrayID = cardsArray.map((card, i) => card.index);
     let cardIndexRandom = [];
     let returnIndex = [];
     let prevIndex = [];
