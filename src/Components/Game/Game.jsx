@@ -54,8 +54,8 @@ export default function Game() {
   useEffect(() => {
     setRestart(false);
     if (bigSize) setCardType(catDog);
-    else if (changeType) setCardType(cardsCat);
-    else setCardType(cardsDog);
+    else if (changeType) setCardType(cardsDog);
+    else setCardType(cardsCat);
     let secondImagesArray = JSON.parse(JSON.stringify(cardType));
     cardType.map((el, i) => (el.index = i));
     secondImagesArray.map((el, i) => (el.index = i + secondImagesArray.length));
@@ -86,6 +86,7 @@ export default function Game() {
   }, [cardsArray])*/
   const handle = useFullScreenHandle();
   const resetGame = () => {
+    clearInterval(intervalId);
     setAutoPlay(false);
     setGameOver(false);
     setRestart(true);
@@ -112,7 +113,9 @@ export default function Game() {
   useEffect(() => {}, [autoplay]);
   const autoPlay = (e) => {
     setAutoPlay(true);
-    let arrayID = cardsArray.map((card, i) => card.index);
+    let arrayID = cardsArray.filter((card, i) =>{
+       if(!card.check) return card}).map((card, i)=>card.index);
+       console.log(arrayID)
     let cardIndexRandom = [];
     let returnIndex = [];
     let prevIndex = [];
@@ -234,6 +237,7 @@ export default function Game() {
                 autoPlay={autoPlay}
                 autoplay={autoplay}
                 stopAutoPlay={stopAutoPlay}
+                checkCardsCount={checkCardsCount}
               />
             </Container>
           )}

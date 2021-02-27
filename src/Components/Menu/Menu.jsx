@@ -18,7 +18,8 @@ export default function Menu({
   autoPlay,
   autoplay,
   stopAutoPlay,
-}) {
+  checkCardsCount,
+}) { 
   return (
     <MenuStyle>
       <ButtonContainerStyle className={mobileMenu ? 'row' : 'column'}>
@@ -61,8 +62,8 @@ export default function Menu({
         </Container>
         <Container>
           <ButtonStyle
-            disabled={autoplay}
-            style={{ opacity: autoplay ? '0.5' : '1' }}
+           disabled={(checkCardsCount % 3 === 1)?true:autoplay}
+            style={{ opacity: (checkCardsCount % 3 === 1)?'0.5':(autoplay ? '0.5' : '1') }}
             onClick={autoPlay}>
             Autoplay
           </ButtonStyle>
