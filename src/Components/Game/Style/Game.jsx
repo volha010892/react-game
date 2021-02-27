@@ -2,17 +2,21 @@ import styled from 'styled-components';
 let vh = window.innerHeight;
 let vw = window.innerWidth;
 export const MainContainerStyle = styled.div`
-  height: ${vh}px;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  align-items: center;
 `;
-export const GameContainerStyle = styled.div`
+export const Container = styled.div`
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
+  &.row{
+  flex-direction: row;
+  }
+  &.column{
+    flex-direction: column;
+  }
 `;
 export const ButtonContainerStyle = styled.div`
   display: flex;
@@ -24,7 +28,7 @@ export const ImagesContainerStyle = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   box-shadow: 4px 4px 10px gray;
-  margin: 0 30px 0 30px;
+  margin: 0;
 `;
 export const Header = styled.div`
   width: 100%;

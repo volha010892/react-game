@@ -16,12 +16,11 @@ export const ItemContainerStyle = styled.div`
   margin: 10px;
   perspective: 1000;
   &.big {
-    width: ${vw / 5 - 50}px;
-    height: ${0.18 * vh}px;
+    width: 19%;
   }
   &.normal {
-    width: ${vw /4 - 50}px;
-    height: ${0.25 * vh}px;
+    width: 20%;
+    
   }
   &.click {
     transform: rotateY(180deg);

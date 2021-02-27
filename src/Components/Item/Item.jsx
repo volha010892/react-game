@@ -13,39 +13,43 @@ export default function Card({
   checkCardsIndex,
   setCheckCardsIndex,
   gameOver,
+  autoplayNumber,
 }) {
   const [check, setCheck] = useState(false);
   const cardClick = () => {
-    if(!gameOver){
-    if (!cards[id].check && checkCardsCount % 3 === 0) {
-      setCheck((prev) => !prev);
-      setCheckCardsCount(checkCardsCount + 1);
-      const newIndexes = [...checkCardsIndex];
-      newIndexes.push(id);
-      setCheckCardsIndex(newIndexes);
-    } else if (
-      checkCardsCount % 3 === 1 && !cards[id].check 
-      && checkCardsIndex.indexOf(id) < 0){
-      setCheck((prev) => !prev);
-      setCheckCardsCount(checkCardsCount + 1);
-      const newIndexes = [...checkCardsIndex];
-      newIndexes.push(id);
-      setCheckCardsIndex(newIndexes);
+    if (!gameOver) {
+      if (!cards[id].check && checkCardsCount % 3 === 0) {
+        setCheck((prev) => !prev);
+        setCheckCardsCount(checkCardsCount + 1);
+        const newIndexes = [...checkCardsIndex];
+        newIndexes.push(id);
+        setCheckCardsIndex(newIndexes);
+      } else if (checkCardsCount % 3 === 1 && !cards[id].check && checkCardsIndex.indexOf(id) < 0) {
+        setCheck((prev) => !prev);
+        setCheckCardsCount(checkCardsCount + 1);
+        const newIndexes = [...checkCardsIndex];
+        newIndexes.push(id);
+        setCheckCardsIndex(newIndexes);
+      }
     }
-  }
   };
   useEffect(() => {
     if (checkCardsIndex[2] === true && checkCardsIndex.indexOf(id) > -1) {
       setTimeout(() => {
         setCheck((prev) => !prev);
         setCheckCardsCount(checkCardsCount + 1);
-        setCheckCardsIndex([])
-      }, 1000)
-   } else if (checkCardsIndex[2] === false && id === 0) {
-    setCheckCardsCount(checkCardsCount + 1);
-      setCheckCardsIndex([])
+        setCheckCardsIndex([]);
+      }, 1000);
+    } else if (checkCardsIndex[2] === false && id === 0) {
+      setCheckCardsCount(checkCardsCount + 1);
+      setCheckCardsIndex([]);
     }
   }, [checkCardsIndex]);
+  useEffect(() => {  
+    if (cards[id].index === autoplayNumber) {
+      cardClick();
+    }
+  }, [autoplayNumber]);
   return (
     <ItemContainerStyle
       onClick={cardClick}

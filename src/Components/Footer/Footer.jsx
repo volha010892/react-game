@@ -5,7 +5,7 @@ import {FooterStyle} from './Styled/Footer';
 export default function Footer() {
   return (
     <FooterStyle>
-          Made by Volha Khmyl
+          2021
           <div onClick={()=>window.location ='https://github.com/volha010892'}>
             <img src={icon} alt="git hub logo"/>
           </div>
