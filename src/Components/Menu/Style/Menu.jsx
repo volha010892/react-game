@@ -37,15 +37,7 @@ export const ButtonStyle = styled.button`
     outline: 0;
   }
 `;
-export const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 5px 0 5px 0;
-  font-weight: 700;
-  font-size: 0.8em;
-`;
-export const ButtonContainerStyle = styled.div`
+export const MenuRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -56,8 +48,19 @@ export const ButtonContainerStyle = styled.div`
     flex-direction: row;
     width: 90%;
   }
-  div {
-    display: flex;
-    flex-direction: column;
-  }
+`;
+export const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+  font-weight: 700;
+  font-size: 0.8em;
+`;
+export const ButtonContainerStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
 `;

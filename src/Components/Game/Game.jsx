@@ -110,7 +110,7 @@ export default function Game() {
   const changeColor = () => {
     setBackgroundColor((prev) => !prev);
   };
-  useEffect(() => {}, [autoplay]);
+
   const autoPlay = (e) => {
     resetGame();
     setAutoPlay(true);
@@ -208,7 +208,7 @@ export default function Game() {
           {!restart && (
             <Container className={mobileMenu ? 'column' : 'row'}>
               <ImagesContainerStyle
-                style={{ height: `${0.8 * size.height}px`, width: `${0.8 * size.width}px` }}>
+                style={{ height: !mobileMenu?`${0.8 * size.height}px`:`${0.6 * size.height}px`, width: `${0.8 * size.width}px` }}>
                 {cardsArray.map((card, i) => (
                   <Card
                     key={i}

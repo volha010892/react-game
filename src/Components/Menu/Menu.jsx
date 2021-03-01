@@ -6,6 +6,7 @@ import {
   ButtonStyle,
   MenuStyle,
   SoundContainerStyle,
+  MenuRow,
 } from './Style/Menu';
 export default function Menu({
   mobileMenu,
@@ -21,58 +22,64 @@ export default function Menu({
 }) {
   return (
     <MenuStyle>
-      <ButtonContainerStyle className={mobileMenu ? 'row' : 'column'}>
-        <Container>
-          <ButtonStyle
-            disabled={autoplay}
-            style={{ opacity: autoplay ? '0.5' : '1' }}
-            onClick={changeCardType}>
-            Change Type
-          </ButtonStyle>
-          CTRL+v
-        </Container>
-        <Container>
-          <ButtonStyle
-            disabled={autoplay}
-            style={{ opacity: autoplay ? '0.5' : '1' }}
-            onClick={changeSize}>
-            Change Size
-          </ButtonStyle>
-          CTRL+c
-        </Container>
-        <Container>
-          <ButtonStyle onClick={changeColor}>Change Color</ButtonStyle>
-          CTRL+x
-        </Container>
-        <Container>
-          <ButtonStyle
-            disabled={autoplay}
-            style={{ opacity: autoplay ? '0.5' : '1' }}
-            onClick={resetGame}>
-            New Game
-          </ButtonStyle>
-          CTRL+ENTER
-        </Container>
-        <Container>
-          <SoundContainerStyle onClick={changeSound}>
-            {mute ? <img src={muteSound} alt="mute" /> : <img src={unmuteSound} alt="mute" />}
-          </SoundContainerStyle>
-          CTRL+z
-        </Container>
-        <Container>
-          <ButtonStyle
-            disabled={autoplay}
-            style={{ opacity: autoplay ? '0.5' : '1' }}
-            onClick={autoPlay}>
-            Autoplay
-          </ButtonStyle>
-          <ButtonStyle
-            disabled={!autoplay}
-            style={{ opacity: !autoplay ? '0.5' : '1' }}
-            onClick={stopAutoPlay}>
-            Stop autoplay
-          </ButtonStyle>
-        </Container>
+      <ButtonContainerStyle>
+        <MenuRow className={mobileMenu ? 'row' : 'column'}>
+          <Container>
+            <ButtonStyle
+              disabled={autoplay}
+              style={{ opacity: autoplay ? '0.5' : '1' }}
+              onClick={changeCardType}>
+              Change Type
+            </ButtonStyle>
+            CTRL+v
+          </Container>
+          <Container>
+            <ButtonStyle
+              disabled={autoplay}
+              style={{ opacity: autoplay ? '0.5' : '1' }}
+              onClick={changeSize}>
+              Change Size
+            </ButtonStyle>
+            CTRL+c
+          </Container>
+          <Container>
+            <ButtonStyle onClick={changeColor}>Change Color</ButtonStyle>
+            CTRL+x
+          </Container>
+          <Container>
+            <ButtonStyle
+              disabled={autoplay}
+              style={{ opacity: autoplay ? '0.5' : '1' }}
+              onClick={resetGame}>
+              New Game
+            </ButtonStyle>
+            CTRL+ENTER
+          </Container>
+        </MenuRow>
+        <MenuRow className={mobileMenu ? 'row' : 'column'}>
+          <Container>
+            <SoundContainerStyle onClick={changeSound}>
+              {mute ? <img src={muteSound} alt="mute" /> : <img src={unmuteSound} alt="mute" />}
+            </SoundContainerStyle>
+            CTRL+z
+          </Container>
+          <Container>
+            <ButtonStyle
+              disabled={autoplay}
+              style={{ opacity: autoplay ? '0.5' : '1' }}
+              onClick={autoPlay}>
+              Autoplay
+            </ButtonStyle>
+          </Container>
+          <Container>
+            <ButtonStyle
+              disabled={!autoplay}
+              style={{ opacity: !autoplay ? '0.5' : '1' }}
+              onClick={stopAutoPlay}>
+              Stop autoplay
+            </ButtonStyle>
+          </Container>
+        </MenuRow>
       </ButtonContainerStyle>
     </MenuStyle>
   );
