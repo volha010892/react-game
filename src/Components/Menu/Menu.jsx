@@ -19,6 +19,8 @@ export default function Menu({
   autoPlay,
   autoplay,
   stopAutoPlay,
+  setAudioVolume,
+  volume,
 }) {
   return (
     <MenuStyle>
@@ -63,6 +65,7 @@ export default function Menu({
             </SoundContainerStyle>
             CTRL+z
           </Container>
+          <input type="range" min="0" max="1" step="0.1" value={volume} onChange={setAudioVolume} />
           <Container>
             <ButtonStyle
               disabled={autoplay}

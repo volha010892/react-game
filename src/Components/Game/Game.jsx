@@ -33,8 +33,6 @@ function useWindowSize() {
 }
 export default function Game() {
   const size = useWindowSize();
-  let audioCorrect = new Audio(correctAnswer);
-  let audioInCorrect = new Audio(inCorrectAnswer);
   const [cardType, setCardType] = useState(cardsCat);
   const [changeType, setChangeType] = useState(false);
   const [restart, setRestart] = useState(false);
@@ -44,12 +42,17 @@ export default function Game() {
   const [cardsArray, setCardsArray] = useState(cardType);
   const [score, setScore] = useState(100);
   const [gameOver, setGameOver] = useState(false);
-  const [mute, setMute] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(false);
   const [autoplay, setAutoPlay] = useState(false);
   const [autoplayNumber, setAutoplayNumber] = useState(null);
   const [intervalId, setIntervalId] = useState();
+  const [volume, setVolume] = useState(1);
+  const [mute, setMute] = useState(false);
+  let audioCorrect = new Audio(correctAnswer);
+  audioCorrect.volume = volume;
+  let audioInCorrect = new Audio(inCorrectAnswer);
+  audioInCorrect.volume = volume;
 
   useEffect(() => {
     setRestart(false);
@@ -110,7 +113,11 @@ export default function Game() {
   const changeColor = () => {
     setBackgroundColor((prev) => !prev);
   };
-
+  const setAudioVolume = (e) => {
+    setVolume(e.target.value);
+    if (e.target.value == 0) setMute(true);
+    else setMute(false);
+  };
   const autoPlay = (e) => {
     resetGame();
     setAutoPlay(true);
@@ -203,12 +210,15 @@ export default function Game() {
             width: `${size.width}px`,
             background: backgroundColor ? '#fc8a7e' : '#fff',
           }}>
-          <Header handle={handle} score={score} />
+          <Header handle={handle} score={score} mobileMenu={mobileMenu} />
           {gameOver && <GameOver resetGame={resetGame} score={score} />}
           {!restart && (
             <Container className={mobileMenu ? 'column' : 'row'}>
               <ImagesContainerStyle
-                style={{ height: !mobileMenu?`${0.8 * size.height}px`:`${0.6 * size.height}px`, width: `${0.8 * size.width}px` }}>
+                style={{
+                  height: !mobileMenu ? `${0.8 * size.height}px` : `${0.6 * size.height}px`,
+                  width: `${0.8 * size.width}px`,
+                }}>
                 {cardsArray.map((card, i) => (
                   <Card
                     key={i}
@@ -237,6 +247,8 @@ export default function Game() {
                 autoplay={autoplay}
                 stopAutoPlay={stopAutoPlay}
                 checkCardsCount={checkCardsCount}
+                volume={volume}
+                setAudioVolume={setAudioVolume}
               />
             </Container>
           )}
