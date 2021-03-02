@@ -16,6 +16,8 @@ export const GameOverStyle = styled.div`
     height: 100%;
   }
 `;
+export const BestResult=styled.div`
+`;
 export const ButtonStyle = styled.button`
   background: #00ad9f;
   border-radius: 4px;

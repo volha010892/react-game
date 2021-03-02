@@ -21,6 +21,7 @@ export default function Menu({
   stopAutoPlay,
   setAudioVolume,
   volume,
+  bigSize,
 }) {
   return (
     <MenuStyle>
@@ -28,8 +29,8 @@ export default function Menu({
         <MenuRow className={mobileMenu ? 'row' : 'column'}>
           <Container>
             <ButtonStyle
-              disabled={autoplay}
-              style={{ opacity: autoplay ? '0.5' : '1' }}
+              disabled={bigSize ? true : autoplay ? true : false}
+              style={{ opacity: bigSize ? '0.5' : autoplay ? '0.5' : '1' }}
               onClick={changeCardType}>
               Change Type
             </ButtonStyle>

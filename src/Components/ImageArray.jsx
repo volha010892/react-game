@@ -12,28 +12,28 @@ import dog5 from '../assets/img/dog5.png';
 import dog6 from '../assets/img/dog6.png';
 
 export const cardsCat = [
-  { img: cat1, id: '1', check: false },
-  { img: cat2, id: '2', check: false },
-  { img: cat3, id: '3', check: false },
-  { img: cat4, id: '4', check: false },
-  { img: cat5, id: '5', check: false },
-  { img: cat6, id: '6', check: false },
+  { img: cat1, id: '1', check: false, click: false},
+  { img: cat2, id: '2', check: false, click: false},
+  { img: cat3, id: '3', check: false, click: false},
+  { img: cat4, id: '4', check: false, click: false},
+  { img: cat5, id: '5', check: false, click: false},
+  { img: cat6, id: '6', check: false, click: false},
 ];
 export const cardsDog = [
-  { img: dog1, id: '1', check: false },
-  { img: dog2, id: '2', check: false },
-  { img: dog3, id: '3', check: false },
-  { img: dog4, id: '4', check: false },
-  { img: dog5, id: '5', check: false },
-  { img: dog6, id: '6', check: false },
+  { img: dog1, id: '1', check: false, click: false},
+  { img: dog2, id: '2', check: false, click: false},
+  { img: dog3, id: '3', check: false, click: false},
+  { img: dog4, id: '4', check: false, click: false},
+  { img: dog5, id: '5', check: false, click: false},
+  { img: dog6, id: '6', check: false, click: false},
 ];
 export const catDog = [
-  { img: cat1, id: '1', check: false },
-  { img: cat2, id: '2', check: false },
-  { img: cat3, id: '3', check: false },
-  { img: cat4, id: '4', check: false },
-  { img: dog3, id: '5', check: false },
-  { img: dog4, id: '6', check: false },
-  { img: dog5, id: '7', check: false },
-  { img: dog6, id: '8', check: false },
+  { img: cat1, id: '1', check: false},
+  { img: cat2, id: '2', check: false},
+  { img: cat3, id: '3', check: false},
+  { img: cat4, id: '4', check: false},
+  { img: dog3, id: '5', check: false},
+  { img: dog4, id: '6', check: false},
+  { img: dog5, id: '7', check: false},
+  { img: dog6, id: '8', check: false},
 ];

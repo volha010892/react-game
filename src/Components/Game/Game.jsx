@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { cardsCat } from '../ImageArray';
-import { cardsDog } from '../ImageArray';
-import { catDog } from '../ImageArray';
+import { cardsCat, catDog, cardsDog } from '../ImageArray';
 import correctAnswer from '../../assets/sound/correct.mp3';
 import inCorrectAnswer from '../../assets/sound/incorrect.mp3';
 import Footer from '../Footer/Footer';
@@ -33,6 +31,7 @@ function useWindowSize() {
 }
 export default function Game() {
   const size = useWindowSize();
+  const handle = useFullScreenHandle();
   const [cardType, setCardType] = useState(cardsCat);
   const [changeType, setChangeType] = useState(false);
   const [restart, setRestart] = useState(false);
@@ -49,47 +48,99 @@ export default function Game() {
   const [intervalId, setIntervalId] = useState();
   const [volume, setVolume] = useState(1);
   const [mute, setMute] = useState(false);
+  const [numberSteps, setNumberSteps] = useState(0);
+  const [finished, setFinished] = useState(false);
+  const [savedScore, setSavedScore] = useState([]);
+  const [name, setName] = useState(false);
+
   let audioCorrect = new Audio(correctAnswer);
   audioCorrect.volume = volume;
   let audioInCorrect = new Audio(inCorrectAnswer);
   audioInCorrect.volume = volume;
-
   useEffect(() => {
     setRestart(false);
-    if (bigSize) setCardType(catDog);
-    else if (changeType) setCardType(cardsDog);
-    else setCardType(cardsCat);
-    let secondImagesArray = JSON.parse(JSON.stringify(cardType));
-    cardType.map((el, i) => (el.index = i));
-    secondImagesArray.map((el, i) => (el.index = i + secondImagesArray.length));
-    let newArray = cardType.concat(secondImagesArray);
-    newArray.sort(() => Math.random() - 0.5);
-    setCardsArray(newArray);
+    let array = JSON.parse(localStorage.getItem('array'));
+    if (array) {
+      setCardsArray(array);
+    } else if (bigSize) {
+      setCardType(catDog);
+      let secondImagesArray = JSON.parse(JSON.stringify(catDog));
+      catDog.map((el, i) => {
+        el.check = false;
+        el.index = i;
+      });
+      secondImagesArray.map((el, i) => {
+        el.check = false;
+        el.index = i + secondImagesArray.length;
+      });
+      let newArray = catDog.concat(secondImagesArray);
+      newArray.sort(() => Math.random() - 0.5);
+      setCardsArray(newArray);
+    } else {
+      let ar = [];
+      if (changeType) ar = cardsDog;
+      if (changeType) ar = cardsDog;
+      else ar = cardsCat;
+      let secondImagesArray = JSON.parse(JSON.stringify(ar));
+      ar.map((el, i) => {
+        el.check = false;
+        el.index = i;
+      });
+      secondImagesArray.map((el, i) => {
+        el.check = false;
+        el.index = i + secondImagesArray.length;
+      });
+      let newArray = ar.concat(secondImagesArray);
+      newArray.sort(() => Math.random() - 0.5);
+      setCardsArray(newArray);
+    }
   }, [changeType, restart, bigSize]);
-
+  useEffect(() => {
+    if (finished) {
+      setGameOver(true);
+      console.log(savedScore.length, savedScore);
+      if (savedScore.length < 6 && score > savedScore[savedScore.length - 1]) setName(true);
+    }
+  }, [finished]);
+  useEffect(() => {
+    let type = JSON.parse(localStorage.getItem('type'));
+    if (type === null) localStorage.setItem('type', JSON.stringify(changeType));
+    else setChangeType(type);
+    let sizeAr = JSON.parse(localStorage.getItem('size'));
+    if (sizeAr) setBigSize(sizeAr);
+    else localStorage.setItem('size', JSON.stringify(bigSize));
+    let cardcount = JSON.parse(localStorage.getItem('checkCardsCount'));
+    if (!cardcount) localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount));
+    else setCheckCardsCount(cardcount);
+    let cardindex = JSON.parse(localStorage.getItem('checkCardsIndex'));
+    if (!cardindex) localStorage.setItem('checkCardsIndex', JSON.stringify(checkCardsIndex));
+    else setCheckCardsIndex(cardindex);
+    let scoreSave = JSON.parse(localStorage.getItem('score'));
+    if (!scoreSave||scoreSave.length===0) localStorage.setItem('score', JSON.stringify(score));
+    else setScore(scoreSave);
+    let stepSave = JSON.parse(localStorage.getItem('step'));
+    if (!stepSave||stepSave.length===0) localStorage.setItem('step', JSON.stringify(numberSteps));
+    else setNumberSteps(stepSave);
+    let highScores = JSON.parse(localStorage.getItem('scores'));
+    if (!highScores) localStorage.setItem('scores', JSON.stringify(score));
+    else {
+      if (Array.isArray(highScores)) {
+        highScores.sort(function (a, b) {
+          return a.value - b.value;
+        });
+      }
+      setSavedScore(highScores);
+    }
+    console.log(highScores);
+  }, []);
   useEffect(() => {
     if (size.height > size.width) setMobileMenu(true);
     if (size.height < size.width) setMobileMenu(false);
-    const finished = !cardsArray.some((card) => !card.check);
-    if (finished) {
-      setGameOver(true);
-    }
+    setFinished(!cardsArray.some((card) => !card.check));
   });
-
-  /*if (finished && cardsArray.length > 0) {
-    setTimeout(() => {
-      const bestPossible = cardsArray.length
-
-      if (score > highScore) {
-        setHighScore(score)
-        const json = JSON.stringify(score)
-        localStorage.setItem('memorygamehighscore', json)
-      }
-
-  }, [cardsArray])*/
-  const handle = useFullScreenHandle();
   const resetGame = () => {
     clearInterval(intervalId);
+    setNumberSteps(0);
     setAutoPlay(false);
     setGameOver(false);
     setRestart(true);
@@ -97,15 +148,41 @@ export default function Game() {
     setCheckCardsCount(0);
     setCheckCardsIndex([]);
     setAutoplayNumber(null);
-    cardsArray.map((card) => (card.check = false));
+    localStorage.removeItem('size');
+    localStorage.removeItem('step');
+    localStorage.removeItem('type');
+    localStorage.removeItem('score');
+    localStorage.setItem('array', null);
+    localStorage.removeItem('checkCardsCount');
+    localStorage.removeItem('checkCardsIndex');
+  };
+  const newGame = () => {
+    clearInterval(intervalId);
+    setRestart(true);
+    setNumberSteps(0);
+    setAutoPlay(false);
+    setGameOver(false);
+    setScore(100);
+    setCheckCardsCount(0);
+    setCheckCardsIndex([]);
+    setAutoplayNumber(null);
+    localStorage.removeItem('size');
+    localStorage.removeItem('score');
+    localStorage.removeItem('type');
+    localStorage.removeItem('step');
+    localStorage.setItem('array', null);
+    localStorage.removeItem('checkCardsCount');
+    localStorage.removeItem('checkCardsIndex');
   };
   const changeCardType = () => {
     setChangeType((prev) => !prev);
-    resetGame();
+    localStorage.setItem('type', JSON.stringify(!changeType));
+    newGame();
   };
   const changeSize = () => {
     setBigSize((prev) => !prev);
-    resetGame();
+    localStorage.setItem('size', JSON.stringify(!bigSize));
+    newGame();
   };
   const changeSound = () => {
     setMute((prev) => !prev);
@@ -164,7 +241,7 @@ export default function Game() {
         }
       }
     };
-    const id = setInterval(play, 2000);
+    const id = setInterval(play, 800);
     setIntervalId(id);
   };
   const stopAutoPlay = () => {
@@ -178,26 +255,33 @@ export default function Game() {
   useHotkeys('ctrl+enter', () => resetGame());
 
   if (checkCardsIndex.length === 2) {
+    setNumberSteps((prev) => prev + 1);
+    localStorage.setItem('step', JSON.stringify(numberSteps+1));
     const match = cardsArray[checkCardsIndex[0]].id === cardsArray[checkCardsIndex[1]].id;
-    setScore(
-      checkCardsCount * 1.3 < cardsArray.length
-        ? 100
-        : 100 + cardsArray.length - checkCardsCount * 2,
-    );
+    const scorePoin = 100 + cardsArray.length - checkCardsCount * 2;
+    let finalScore=null;
+    if (checkCardsCount * 1.3 < cardsArray.length) finalScore = 100;
+    else if (scorePoin < 1) finalScore = 0;
+    else finalScore = 100 + cardsArray.length - checkCardsCount * 2;
+    setScore(finalScore);
+    localStorage.setItem('score', JSON.stringify(finalScore));
     if (match) {
       if (!mute) audioCorrect.play();
       const newGame = [...cardsArray];
       newGame[checkCardsIndex[0]].check = true;
       newGame[checkCardsIndex[1]].check = true;
       setCardsArray(newGame);
+      localStorage.setItem('array', JSON.stringify(newGame));
       const newIndexes = [...checkCardsIndex];
       newIndexes.push(false);
       setCheckCardsIndex(newIndexes);
+      localStorage.setItem('checkCardsIndex', JSON.stringify(newIndexes));
     } else {
       if (!mute) audioInCorrect.play();
       const newIndexes = [...checkCardsIndex];
       newIndexes.push(true);
       setCheckCardsIndex(newIndexes);
+      localStorage.setItem('checkCardsIndex', JSON.stringify(newIndexes));
     }
   }
   if (cardsArray.length === 0) return <div>loading...</div>;
@@ -210,8 +294,11 @@ export default function Game() {
             width: `${size.width}px`,
             background: backgroundColor ? '#fc8a7e' : '#fff',
           }}>
-          <Header handle={handle} score={score} mobileMenu={mobileMenu} />
-          {gameOver && <GameOver resetGame={resetGame} score={score} />}
+          <Header numberSteps={numberSteps} handle={handle} score={score} mobileMenu={mobileMenu} />
+          {gameOver && (
+            <GameOver name={name} savedScore={savedScore} resetGame={resetGame} score={score} />
+          )}
+
           {!restart && (
             <Container className={mobileMenu ? 'column' : 'row'}>
               <ImagesContainerStyle
@@ -239,6 +326,8 @@ export default function Game() {
                 mobileMenu={mobileMenu}
                 changeCardType={changeCardType}
                 changeSize={changeSize}
+                setChangeType={setChangeType}
+                setBigSize={setBigSize}
                 mute={mute}
                 changeSound={changeSound}
                 changeColor={changeColor}
@@ -249,6 +338,7 @@ export default function Game() {
                 checkCardsCount={checkCardsCount}
                 volume={volume}
                 setAudioVolume={setAudioVolume}
+                bigSize={bigSize}
               />
             </Container>
           )}

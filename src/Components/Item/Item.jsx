@@ -19,33 +19,44 @@ export default function Card({
   const cardClick = () => {
     if (!gameOver) {
       if (!cards[id].check && checkCardsCount % 3 === 0) {
+        localStorage.setItem('array', JSON.stringify(cards));
         setCheck((prev) => !prev);
+        localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
         setCheckCardsCount(checkCardsCount + 1);
         const newIndexes = [...checkCardsIndex];
         newIndexes.push(id);
         setCheckCardsIndex(newIndexes);
+        localStorage.setItem('checkCardsIndex', JSON.stringify(newIndexes));
       } else if (checkCardsCount % 3 === 1 && !cards[id].check && checkCardsIndex.indexOf(id) < 0) {
         setCheck((prev) => !prev);
+        localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
         setCheckCardsCount(checkCardsCount + 1);
         const newIndexes = [...checkCardsIndex];
         newIndexes.push(id);
         setCheckCardsIndex(newIndexes);
+        localStorage.setItem('checkCardsIndex', JSON.stringify(checkCardsIndex));
       }
     }
   };
+  useEffect(() => {
+    if (checkCardsIndex[0] === id) {
+      cardClick();
+      setCheck(true);
+    }
+  }, [checkCardsIndex]);
   useEffect(() => {
     if (checkCardsIndex[2] === true && checkCardsIndex.indexOf(id) > -1) {
       setTimeout(() => {
         setCheck((prev) => !prev);
         setCheckCardsCount(checkCardsCount + 1);
         setCheckCardsIndex([]);
-      }, 1000);
+      }, 400);
     } else if (checkCardsIndex[2] === false && id === 0) {
       setCheckCardsCount(checkCardsCount + 1);
       setCheckCardsIndex([]);
     }
   }, [checkCardsIndex]);
-  useEffect(() => {  
+  useEffect(() => {
     if (cards[id].index === autoplayNumber) {
       cardClick();
     }
@@ -55,7 +66,7 @@ export default function Card({
       onClick={cardClick}
       className={check ? 'click' : ''}
       className={size ? 'big' : 'normal'}>
-      <Flipper className={check ? 'click' : ''}>
+      <Flipper className={cards[id].check || check ? 'click' : ''}>
         <ImageFront>
           <Image src={bg} />
         </ImageFront>
