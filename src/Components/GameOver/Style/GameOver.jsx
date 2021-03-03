@@ -17,6 +17,9 @@ export const GameOverStyle = styled.div`
 export const BestResultContainer = styled.div`
 flex-direction: column;
 width: 80%;
+height: 50%;
+font-weight: 500;
+font-size: 100%;
 tr{
   border: solid 1px #fc8a7e;
   flex-direction: row;
