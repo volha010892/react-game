@@ -3,7 +3,7 @@ let vh = window.innerHeight;
 let vw = window.innerWidth;
 export const Flipper = styled.div`
   height: 100%;
-  transition: 0.4s;
+  transition: 0.3s;
   transform-style: preserve-3d;
   position: relative;
   &.click {

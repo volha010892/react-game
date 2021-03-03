@@ -15,9 +15,10 @@ export default function Card({
   gameOver,
   autoplayNumber,
 }) {
+  let notAllow=null;
   const [check, setCheck] = useState(false);
   const cardClick = () => {
-    if (!gameOver) {
+    if (!gameOver&&!notAllow) {
       if (!cards[id].check && checkCardsCount % 3 === 0) {
         localStorage.setItem('array', JSON.stringify(cards));
         setCheck((prev) => !prev);
@@ -46,16 +47,17 @@ export default function Card({
   }, [checkCardsIndex]);
   useEffect(() => {
     if (checkCardsIndex[2] === true && checkCardsIndex.indexOf(id) > -1) {
+     notAllow=true;
       setTimeout(() => {
         setCheck((prev) => !prev);
         setCheckCardsCount(checkCardsCount + 1);
         localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
         setCheckCardsIndex([]);
         localStorage.setItem('checkCardsIndex', JSON.stringify([]));
-      }, 400);
+        notAllow=false;
+      }, 300);
     } else if (checkCardsIndex[2] === false && id === 0) {
       setCheckCardsCount(checkCardsCount + 1);
-    //  localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
       setCheckCardsIndex([]);
     }
   }, [checkCardsIndex]);

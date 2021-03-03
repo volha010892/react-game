@@ -50,8 +50,6 @@ export default function Game() {
   const [mute, setMute] = useState(false);
   const [numberSteps, setNumberSteps] = useState(0);
   const [finished, setFinished] = useState(false);
-  const [restartType, setRestartType] = useState(false);
-  const [restartSize, setRestartSize] = useState(false);
 
   let audioCorrect = new Audio(correctAnswer);
   audioCorrect.volume = volume;
@@ -59,7 +57,6 @@ export default function Game() {
   audioInCorrect.volume = volume;
   useEffect(() => {
     setRestart(false);
-    setRestartSize(false);
     let array = JSON.parse(localStorage.getItem('array'));
     if (array) {
       setCardsArray(array);
@@ -164,13 +161,13 @@ export default function Game() {
   };
   const changeCardType = () => {
     setChangeType((prev) => !prev);
-    setRestart(true)
+    setRestart(true);
     localStorage.setItem('type', JSON.stringify(!changeType));
     newGame();
   };
   const changeSize = () => {
     setBigSize((prev) => !prev);
-    setRestart(true)
+    setRestart(true);
     localStorage.setItem('size', JSON.stringify(!bigSize));
     newGame();
   };
@@ -285,12 +282,7 @@ export default function Game() {
             background: backgroundColor ? '#fc8a7e' : '#fff',
           }}>
           <Header numberSteps={numberSteps} handle={handle} score={score} mobileMenu={mobileMenu} />
-          {gameOver && (
-            <GameOver
-              resetGame={resetGame}
-              score={score}
-            />
-          )}
+          {gameOver && <GameOver resetGame={resetGame} score={score} />}
 
           {!restart && (
             <Container className={mobileMenu ? 'column' : 'row'}>
