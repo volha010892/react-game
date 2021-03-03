@@ -50,8 +50,8 @@ export default function Game() {
   const [mute, setMute] = useState(false);
   const [numberSteps, setNumberSteps] = useState(0);
   const [finished, setFinished] = useState(false);
-  const [savedScore, setSavedScore] = useState([]);
-  const [name, setName] = useState(false);
+  const [restartType, setRestartType] = useState(false);
+  const [restartSize, setRestartSize] = useState(false);
 
   let audioCorrect = new Audio(correctAnswer);
   audioCorrect.volume = volume;
@@ -59,6 +59,7 @@ export default function Game() {
   audioInCorrect.volume = volume;
   useEffect(() => {
     setRestart(false);
+    setRestartSize(false);
     let array = JSON.parse(localStorage.getItem('array'));
     if (array) {
       setCardsArray(array);
@@ -98,8 +99,6 @@ export default function Game() {
   useEffect(() => {
     if (finished) {
       setGameOver(true);
-      console.log(savedScore.length, savedScore);
-      if (savedScore.length < 6 && score > savedScore[savedScore.length - 1]) setName(true);
     }
   }, [finished]);
   useEffect(() => {
@@ -116,22 +115,12 @@ export default function Game() {
     if (!cardindex) localStorage.setItem('checkCardsIndex', JSON.stringify(checkCardsIndex));
     else setCheckCardsIndex(cardindex);
     let scoreSave = JSON.parse(localStorage.getItem('score'));
-    if (!scoreSave||scoreSave.length===0) localStorage.setItem('score', JSON.stringify(score));
+    if (!scoreSave || scoreSave.length === 0) localStorage.setItem('score', JSON.stringify(score));
     else setScore(scoreSave);
     let stepSave = JSON.parse(localStorage.getItem('step'));
-    if (!stepSave||stepSave.length===0) localStorage.setItem('step', JSON.stringify(numberSteps));
+    if (!stepSave || stepSave.length === 0)
+      localStorage.setItem('step', JSON.stringify(numberSteps));
     else setNumberSteps(stepSave);
-    let highScores = JSON.parse(localStorage.getItem('scores'));
-    if (!highScores) localStorage.setItem('scores', JSON.stringify(score));
-    else {
-      if (Array.isArray(highScores)) {
-        highScores.sort(function (a, b) {
-          return a.value - b.value;
-        });
-      }
-      setSavedScore(highScores);
-    }
-    console.log(highScores);
   }, []);
   useEffect(() => {
     if (size.height > size.width) setMobileMenu(true);
@@ -158,7 +147,6 @@ export default function Game() {
   };
   const newGame = () => {
     clearInterval(intervalId);
-    setRestart(true);
     setNumberSteps(0);
     setAutoPlay(false);
     setGameOver(false);
@@ -176,11 +164,13 @@ export default function Game() {
   };
   const changeCardType = () => {
     setChangeType((prev) => !prev);
+    setRestart(true)
     localStorage.setItem('type', JSON.stringify(!changeType));
     newGame();
   };
   const changeSize = () => {
     setBigSize((prev) => !prev);
+    setRestart(true)
     localStorage.setItem('size', JSON.stringify(!bigSize));
     newGame();
   };
@@ -256,10 +246,10 @@ export default function Game() {
 
   if (checkCardsIndex.length === 2) {
     setNumberSteps((prev) => prev + 1);
-    localStorage.setItem('step', JSON.stringify(numberSteps+1));
+    localStorage.setItem('step', JSON.stringify(numberSteps + 1));
     const match = cardsArray[checkCardsIndex[0]].id === cardsArray[checkCardsIndex[1]].id;
     const scorePoin = 100 + cardsArray.length - checkCardsCount * 2;
-    let finalScore=null;
+    let finalScore = null;
     if (checkCardsCount * 1.3 < cardsArray.length) finalScore = 100;
     else if (scorePoin < 1) finalScore = 0;
     else finalScore = 100 + cardsArray.length - checkCardsCount * 2;
@@ -296,7 +286,10 @@ export default function Game() {
           }}>
           <Header numberSteps={numberSteps} handle={handle} score={score} mobileMenu={mobileMenu} />
           {gameOver && (
-            <GameOver name={name} savedScore={savedScore} resetGame={resetGame} score={score} />
+            <GameOver
+              resetGame={resetGame}
+              score={score}
+            />
           )}
 
           {!restart && (

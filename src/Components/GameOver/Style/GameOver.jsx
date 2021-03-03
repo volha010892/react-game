@@ -1,22 +1,27 @@
 import styled from 'styled-components';
 export const GameOverStyle = styled.div`
   position: absolute;
-  top: 10px;
+  top: 10%;
   background-color: white;
   z-index: 3;
-  height: 30%;
-  width: 90%;
+  font-weight: 700;
+  bottom: 8%;
+  left: 20px;
+  right: 20px;
   box-shadow: 4px 4px 10px gray;
   div {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
   }
 `;
-export const BestResult=styled.div`
+export const BestResultContainer = styled.div`
+flex-direction: column;
+width: 80%;
+tr{
+  border: solid 1px #fc8a7e;
+  flex-direction: row;
+  display: flex;
+}
 `;
 export const ButtonStyle = styled.button`
   background: #00ad9f;
