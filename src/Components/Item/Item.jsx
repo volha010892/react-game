@@ -34,7 +34,7 @@ export default function Card({
         const newIndexes = [...checkCardsIndex];
         newIndexes.push(id);
         setCheckCardsIndex(newIndexes);
-        localStorage.setItem('checkCardsIndex', JSON.stringify(checkCardsIndex));
+        localStorage.setItem('checkCardsIndex', JSON.stringify(newIndexes));
       }
     }
   };
@@ -49,10 +49,13 @@ export default function Card({
       setTimeout(() => {
         setCheck((prev) => !prev);
         setCheckCardsCount(checkCardsCount + 1);
+        localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
         setCheckCardsIndex([]);
+        localStorage.setItem('checkCardsIndex', JSON.stringify([]));
       }, 400);
     } else if (checkCardsIndex[2] === false && id === 0) {
       setCheckCardsCount(checkCardsCount + 1);
+    //  localStorage.setItem('checkCardsCount', JSON.stringify(checkCardsCount + 1));
       setCheckCardsIndex([]);
     }
   }, [checkCardsIndex]);
